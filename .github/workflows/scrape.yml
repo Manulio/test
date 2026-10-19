@@ -1,0 +1,39 @@
+name: Scrapeo diario
+
+on:
+  schedule:
+    # 06:17 UTC = 03:17 en Uruguay, cuando las tiendas tienen menos tráfico.
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+    inputs:
+      chains:
+        description: "Cadenas separadas por espacio (vacío = todas)"
+        required: false
+      limit:
+        description: "Máximo de productos por cadena (vacío = sin límite)"
+        required: false
+
+concurrency:
+  group: scrape
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:migrate
+      - name: Scrapear
+        env:
+          CHAINS: ${{ inputs.chains }}
+          LIMIT: ${{ inputs.limit }}
+        run: pnpm scrape $CHAINS ${LIMIT:+--limit "$LIMIT"}
