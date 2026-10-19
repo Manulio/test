@@ -42,6 +42,17 @@ GitHub Actions (cron 03:17 UY)
 - `listings`: cada producto tal como aparece en una cadena, con el resultado del matching (`match_status`, `match_score`, `match_candidate_id`).
 - `prices`: precio por listado y por día (`list_price`, `sale_price`, `promo_text`, `available`). Al guardar uno por día, el historial sale gratis.
 
+## Lista de compras óptima
+
+La lista vive en `localStorage` (clave `preciosuy:lista`), sin necesidad de cuenta. La página `/lista` manda los ids y cantidades a `POST /api/lista`, y `optimizeBasket()` (`packages/db/src/basket.ts`) devuelve:
+
+- **Total por cadena:** cada cadena comprando sola, ordenadas primero por cantidad de productos faltantes y después por total.
+- **Mejor par:** prueba todas las combinaciones de dos cadenas, comprando cada producto en la más barata del par. Solo se muestra si mejora a la mejor cadena sola.
+
+Las ofertas sin stock no cuentan. Si una cadena no tiene un producto, se avisa en lugar de comparar totales que no son equivalentes.
+
+## Búsqueda
+
 La búsqueda exige que todas las palabras aparezcan en el texto, o que haya similitud de palabras (`<%` de pg_trgm) para tolerar errores de tipeo. Los resultados se ordenan por cantidad de cadenas en las que está el producto. Los precios con más de 7 días no se muestran.
 
 ## Cómo sumar una cadena
@@ -55,7 +66,7 @@ Reglas de cortesía, ya implementadas en `http.ts` y `robots.ts`: una request a 
 ## Fases
 
 1. ✅ Monorepo, esquema, matching, scraper VTEX, búsqueda y ficha de producto
-2. Más cadenas (Tienda Inglesa, Ta-Ta, El Dorado) y ajuste del matching con datos reales
-3. Lista de compras óptima (mejor cadena única y mejor combinación de dos cadenas), cuentas opcionales con Supabase Auth y service worker
+2. Más cadenas (Tienda Inglesa, Ta-Ta, El Dorado) y ajuste del matching con datos reales. Pendiente de correr `probe.mjs` con acceso a los sitios
+3. 🟡 Lista de compras óptima ✅. Faltan las cuentas opcionales con Supabase Auth (para sincronizar la lista) y el service worker
 4. Importación del SIPC y pantalla `/admin` para revisar los matches dudosos
 5. Historial con gráficos, alertas de precio, escaneo de código de barras y precios por sucursal

@@ -100,10 +100,19 @@ async function offersFor(db: Db, rows: ProductRow[]): Promise<ProductWithOffers[
     sizeAmount: r.size_amount,
     sizeUnit: r.size_unit,
     imageUrl: r.image_url,
-    offers: (byProduct.get(r.id) ?? []).sort(
-      (a, b) => Number(b.available) - Number(a.available) || a.price - b.price,
-    ),
+    offers: bestPerChain(byProduct.get(r.id) ?? []),
   }));
+}
+
+const byPreference = (a: Offer, b: Offer) => Number(b.available) - Number(a.available) || a.price - b.price;
+
+/** Una oferta por cadena (si vende el mismo producto con dos SKUs, gana el disponible y más barato), ordenadas. */
+function bestPerChain(offers: Offer[]): Offer[] {
+  const best = new Map<string, Offer>();
+  for (const offer of [...offers].sort(byPreference)) {
+    if (!best.has(offer.chainSlug)) best.set(offer.chainSlug, offer);
+  }
+  return [...best.values()];
 }
 
 /**
@@ -144,4 +153,15 @@ export async function getProduct(db: Db, id: number): Promise<ProductWithOffers 
   `);
   const [product] = await offersFor(db, [...rows]);
   return product ?? null;
+}
+
+/** Varios productos con sus ofertas, en el orden de los ids pedidos (los que no existen se omiten). */
+export async function getProducts(db: Db, ids: number[]): Promise<ProductWithOffers[]> {
+  const unique = [...new Set(ids.filter((id) => Number.isInteger(id) && id > 0))];
+  if (unique.length === 0) return [];
+  const rows = await db.execute<ProductRow>(sql`
+    select id, name, brand, ean, size_amount, size_unit, image_url from products where id in ${unique}
+  `);
+  const products = await offersFor(db, [...rows]);
+  return unique.flatMap((id) => products.find((p) => p.id === id) ?? []);
 }

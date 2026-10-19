@@ -2,6 +2,7 @@ import { getDb, getProduct } from "@precios/db";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AddToListButton } from "@/components/AddToListButton";
 import { OfferList } from "@/components/OfferList";
 import { formatSize } from "@/lib/format";
 
@@ -42,6 +43,9 @@ export default async function ProductPage({ params }: Props) {
               .filter(Boolean)
               .join(" · ")}
           </p>
+          <div className="mt-3">
+            <AddToListButton id={product.id} name={product.name} />
+          </div>
         </div>
       </header>
       <section className="rounded-2xl border border-border bg-surface p-4">

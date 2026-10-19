@@ -1,6 +1,7 @@
 import type { ProductWithOffers } from "@precios/db";
 import Link from "next/link";
 import { formatPrice, formatSize } from "@/lib/format";
+import { AddToListButton } from "./AddToListButton";
 import { OfferList } from "./OfferList";
 
 export function ProductCard({ product }: { product: ProductWithOffers }) {
@@ -28,11 +29,16 @@ export function ProductCard({ product }: { product: ProductWithOffers }) {
         </div>
       </header>
       <OfferList offers={product.offers} unit={product.sizeUnit} />
-      {savings != null && (
-        <p className="mt-2 text-xs text-muted">
-          Ahorrás hasta <span className="font-medium text-foreground">{formatPrice(savings)}</span> eligiendo bien
+      <footer className="mt-auto flex items-center justify-between gap-2 pt-3">
+        <p className="text-xs text-muted">
+          {savings != null && (
+            <>
+              Ahorrás hasta <span className="font-medium text-foreground">{formatPrice(savings)}</span>
+            </>
+          )}
         </p>
-      )}
+        <AddToListButton id={product.id} name={product.name} />
+      </footer>
     </article>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
+import { ListLink } from "@/components/ListLink";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,11 +21,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="es-UY">
       <body className="min-h-dvh antialiased">
         <header className="border-b border-border bg-surface">
-          <div className="mx-auto flex max-w-5xl items-center px-4 py-3">
+          <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
             <Link href="/" className="text-lg font-bold tracking-tight">
               Precios<span className="text-accent">UY</span>
             </Link>
-          </div>
+            <ListLink />
+          </nav>
         </header>
         <main className="mx-auto max-w-5xl px-4 py-6">{children}</main>
         <footer className="mx-auto max-w-5xl px-4 pb-8 text-xs text-muted">
