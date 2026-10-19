@@ -4,19 +4,44 @@ Comparador de precios de supermercados de Uruguay. Es una web instalable como ap
 
 Estado: **fase 1 completa y parte de la 3**. Tiene búsqueda y comparación de precios, el scraper de las cadenas VTEX (Disco, Devoto y Geant), el cruce de productos entre cadenas y la lista de compras óptima. El plan completo está en [ARCHITECTURE.md](./ARCHITECTURE.md).
 
-## Requisitos
+## Despliegue local con Docker (recomendado)
+
+Solo hace falta Docker con Compose. Levanta la base de datos, aplica las migraciones y sirve la web:
+
+```bash
+docker compose up -d --build
+```
+
+Después:
+
+| Para… | Comando |
+|---|---|
+| Abrir la app | http://localhost:3000 |
+| Cargar los datos de demo (precios inventados) | `docker compose run --rm tools pnpm --filter @precios/db seed` |
+| Scrapear una cadena ahora | `docker compose run --rm tools pnpm scrape disco --limit 200` |
+| Scrapear todas las noches (03:17 UY) | `docker compose --profile scheduler up -d` |
+| Ver logs | `docker compose logs -f web` |
+| Actualizar después de un `git pull` | `docker compose up -d --build` |
+| Apagar | `docker compose down` (los datos quedan en el volumen `precios-data`) |
+| Borrar también los datos | `docker compose down -v` |
+
+La base queda expuesta en `localhost:5432` (usuario y contraseña `postgres`), por si querés mirarla con un cliente SQL. Si ya tenés otro Postgres en ese puerto, cambiá `"5432:5432"` por `"5433:5432"` en `docker-compose.yml`.
+
+## Desarrollo sin Docker
+
+### Requisitos
 
 - Node 22 y pnpm 10 (`corepack enable`)
 - PostgreSQL 16 con la extensión `pg_trgm`. Sirve una instalación local, Docker, Supabase o Neon.
 
-## Puesta en marcha
+### Puesta en marcha
 
 ```bash
 pnpm install
 cp .env.example .env            # ajustá DATABASE_URL
 cp .env.example apps/web/.env.local
 
-docker compose up -d            # Postgres local (o usá uno propio)
+docker compose up -d db         # solo Postgres (o usá uno propio)
 
 export DATABASE_URL=postgres://postgres:postgres@localhost:5432/precios
 pnpm db:migrate
