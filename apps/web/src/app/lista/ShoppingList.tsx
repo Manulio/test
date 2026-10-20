@@ -72,7 +72,7 @@ export function ShoppingList() {
         <ul className="divide-y divide-border rounded-2xl border border-border bg-surface">
           {list.map((entry) => {
             const product = products.get(entry.id);
-            const cheapest = product?.offers.find((o) => o.available);
+            const cheapest = product?.offers.find((o) => o.available && o.source !== "sipc");
             return (
               <li key={entry.id} className="flex items-center gap-3 p-3">
                 <div className="min-w-0 flex-1">

@@ -15,3 +15,9 @@ export function formatSize(amount: number | null, unit: "g" | "ml" | "un" | null
 export function unitLabel(unit: "g" | "ml" | "un" | null): string {
   return unit === "g" ? "/kg" : unit === "ml" ? "/L" : "/un.";
 }
+
+/** "2026-06-30" → "30/06/2026". */
+export function formatDate(isoDate: string): string {
+  const [y, m, d] = isoDate.split("-");
+  return `${d}/${m}/${y}`;
+}

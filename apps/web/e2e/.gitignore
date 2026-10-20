@@ -1,0 +1,4 @@
+# Copia de la app que compilan las e2e (con su propio .next) y resultados de Playwright.
+/.app/
+/test-results/
+/report/

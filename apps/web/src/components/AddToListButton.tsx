@@ -2,7 +2,7 @@
 
 import { setQuantity, useShoppingList } from "@/lib/shopping-list";
 
-export function AddToListButton({ id, name }: { id: number; name: string }) {
+export function AddToListButton({ id, name, compact = false }: { id: number; name: string; compact?: boolean }) {
   const entry = useShoppingList().find((e) => e.id === id);
 
   if (!entry) {
@@ -12,7 +12,7 @@ export function AddToListButton({ id, name }: { id: number; name: string }) {
         onClick={() => setQuantity(id, name, 1)}
         className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium hover:border-accent hover:text-accent"
       >
-        + Agregar a la lista
+        {compact ? "+ Agregar" : "+ Agregar a la lista"}
       </button>
     );
   }
