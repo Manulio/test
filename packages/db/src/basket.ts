@@ -38,7 +38,8 @@ function planFor(items: BasketItem[], chainSlugs: string[], names: Map<string, s
 
   for (const { product, quantity } of items) {
     // Las ofertas ya vienen ordenadas: disponibles primero y de la más barata a la más cara.
-    const offer = product.offers.find((o) => o.available && chainSlugs.includes(o.chainSlug));
+    // Los precios del SIPC no cuentan: son de hace meses y no sirven para decidir la compra de hoy.
+    const offer = product.offers.find((o) => o.available && o.source !== "sipc" && chainSlugs.includes(o.chainSlug));
     if (!offer) {
       missing.push(product.id);
       continue;
@@ -73,7 +74,9 @@ const compare = (a: BasketPlan, b: BasketPlan) => a.missing.length - b.missing.l
  */
 export function optimizeBasket(items: BasketItem[]): BasketResult {
   const names = new Map<string, string>();
-  for (const { product } of items) for (const o of product.offers) names.set(o.chainSlug, o.chainName);
+  for (const { product } of items) {
+    for (const o of product.offers) if (o.source !== "sipc") names.set(o.chainSlug, o.chainName);
+  }
   const slugs = [...names.keys()].sort();
 
   const singles = slugs.map((s) => planFor(items, [s], names)).sort(compare);

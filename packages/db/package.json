@@ -12,7 +12,9 @@
     "migrate": "tsx scripts/migrate.ts",
     "seed": "tsx scripts/seed.ts",
     "test": "vitest run",
-    "typecheck": "tsc -p ."
+    "typecheck": "tsc -p .",
+    "import:sipc": "tsx scripts/import-sipc.ts",
+    "rematch": "tsx scripts/rematch.ts"
   },
   "dependencies": {
     "@precios/matching": "workspace:*",

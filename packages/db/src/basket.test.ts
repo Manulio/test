@@ -18,10 +18,11 @@ function product(id: number, prices: Record<string, number | [number, false]>): 
       promoText: null,
       available,
       date: "2026-10-19",
+      source: "scraper" as const,
     };
   });
   offers.sort((x, y) => Number(y.available) - Number(x.available) || x.price - y.price);
-  return { id, name: `P${id}`, brand: null, ean: null, sizeAmount: null, sizeUnit: null, imageUrl: null, offers };
+  return { id, name: `P${id}`, brand: null, ean: null, sizeAmount: null, sizeUnit: null, imageUrl: null, category: "otros", offers };
 }
 
 const item = (p: ProductWithOffers, quantity = 1): BasketItem => ({ product: p, quantity });
@@ -85,5 +86,12 @@ describe("optimizeBasket", () => {
 
   it("lista vacía", () => {
     expect(optimizeBasket([])).toEqual({ singles: [], bestPair: null });
+  });
+
+  it("ignora los precios del SIPC, que son de hace meses", () => {
+    const p = product(1, { a: 100 });
+    p.offers.push({ ...p.offers[0]!, chainSlug: "c", chainName: "Cadena C", price: 50, listPrice: 50, source: "sipc" });
+    const result = optimizeBasket([item(p)]);
+    expect(result.singles.map((s) => s.chains[0]?.slug)).toEqual(["a"]);
   });
 });
