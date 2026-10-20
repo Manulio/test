@@ -1,0 +1,451 @@
+{
+ "data": {
+  "search": {
+   "products": {
+    "pageInfo": {
+     "totalCount": 2505
+    },
+    "edges": [
+     {
+      "node": {
+       "id": "8413",
+       "slug": "azucar-ta-ta-1-kg-1000054313-8413",
+       "sku": "8413",
+       "hasMulticurrencyPrice": false,
+       "clusterHighlights": [
+        {
+         "id": "277",
+         "name": "Facebook-DPA"
+        },
+        {
+         "id": "2520",
+         "name": "Google-shopping-Shop"
+        },
+        {
+         "id": "8359",
+         "name": "Canasta Basica"
+        }
+       ],
+       "brand": {
+        "brandName": "TaTa",
+        "name": "TaTa"
+       },
+       "name": "Azúcar TaTa 1 Kg",
+       "collectionsIds": [
+        "277",
+        "278",
+        "2520",
+        "4618",
+        "8359"
+       ],
+       "brandId": 2002243,
+       "categoriesIds": [
+        "191",
+        "52",
+        "533"
+       ],
+       "productId": "1443",
+       "gtin": "1000054313",
+       "unitMultiplier": 1,
+       "measurementUnit": "un",
+       "isVariantOf": {
+        "productGroupID": "1443",
+        "name": "Azúcar TaTa 1 Kg",
+        "additionalProperty": [],
+        "skuVariants": {
+         "activeVariations": {},
+         "slugsMap": {},
+         "availableVariations": {}
+        },
+        "hasVariant": [
+         {
+          "slug": "azucar-ta-ta-1-kg-1000054313-8413",
+          "offers": {
+           "lowPrice": 43,
+           "offers": [
+            {
+             "availability": "https://schema.org/InStock",
+             "price": 43,
+             "listPrice": 43
+            }
+           ]
+          },
+          "image": [
+           {
+            "url": "https://tatauy.vtexassets.com/arquivos/ids/626351/Az-car-Ta-Ta-1-Kg-1-8957.jpg?v=638271165717130000",
+            "alternateName": "259599000-01"
+           },
+           {
+            "url": "https://tatauy.vtexassets.com/arquivos/ids/285260/Azucar-Ta-Ta-1-Kg-2-8957.jpg?v=637789809632070000",
+            "alternateName": "259599000-02"
+           },
+           {
+            "url": "https://tatauy.vtexassets.com/arquivos/ids/285261/Azucar-Ta-Ta-1-Kg-3-8957.jpg?v=637789809640970000",
+            "alternateName": "259599000-03"
+           }
+          ]
+         }
+        ]
+       },
+       "image": [
+        {
+         "url": "https://tatauy.vtexassets.com/arquivos/ids/626351/Az-car-Ta-Ta-1-Kg-1-8957.jpg?v=638271165717130000",
+         "alternateName": "259599000-01"
+        },
+        {
+         "url": "https://tatauy.vtexassets.com/arquivos/ids/285260/Azucar-Ta-Ta-1-Kg-2-8957.jpg?v=637789809632070000",
+         "alternateName": "259599000-02"
+        },
+        {
+         "url": "https://tatauy.vtexassets.com/arquivos/ids/285261/Azucar-Ta-Ta-1-Kg-3-8957.jpg?v=637789809640970000",
+         "alternateName": "259599000-03"
+        }
+       ],
+       "offers": {
+        "lowPrice": 43,
+        "offers": [
+         {
+          "availability": "https://schema.org/InStock",
+          "price": 43,
+          "listPrice": 43,
+          "quantity": 10000,
+          "seller": {
+           "identifier": "1"
+          },
+          "itemOffered": {
+           "sku": "8413",
+           "name": "Azúcar TaTa 1 Kg",
+           "gtin": "1000054313",
+           "image": [
+            {
+             "url": "https://tatauy.vtexassets.com/arquivos/ids/626351/Az-car-Ta-Ta-1-Kg-1-8957.jpg?v=638271165717130000",
+             "alternateName": "259599000-01"
+            }
+           ],
+           "brand": {
+            "name": "TaTa"
+           },
+           "isVariantOf": {
+            "productGroupID": "1443",
+            "name": "Azúcar TaTa 1 Kg"
+           },
+           "additionalProperty": []
+          }
+         }
+        ]
+       }
+      }
+     },
+     {
+      "node": {
+       "id": "8298",
+       "slug": "aceite-de-girasol-ta-ta-900-ml-1000111384-8298",
+       "sku": "8298",
+       "hasMulticurrencyPrice": false,
+       "clusterHighlights": [
+        {
+         "id": "277",
+         "name": "Facebook-DPA"
+        },
+        {
+         "id": "2520",
+         "name": "Google-shopping-Shop"
+        },
+        {
+         "id": "6824",
+         "name": "Almacén"
+        },
+        {
+         "id": "7092",
+         "name": "Almacén hasta 40% Off"
+        },
+        {
+         "id": "7174",
+         "name": "Almacén"
+        },
+        {
+         "id": "7539",
+         "name": "Aceites"
+        },
+        {
+         "id": "7616",
+         "name": "Nuestras Marcas"
+        },
+        {
+         "id": "7679",
+         "name": "Aderezos y aceites"
+        },
+        {
+         "id": "7931",
+         "name": "Ofertas Destacadas"
+        },
+        {
+         "id": "8135",
+         "name": "Productos destacados"
+        },
+        {
+         "id": "8359",
+         "name": "Canasta Basica"
+        }
+       ],
+       "brand": {
+        "brandName": "TaTa",
+        "name": "TaTa"
+       },
+       "name": "Aceite De Girasol TaTa 900 ml",
+       "collectionsIds": [
+        "277",
+        "278",
+        "2520",
+        "4618",
+        "6824",
+        "7092",
+        "7174",
+        "7539",
+        "7616",
+        "7679",
+        "7931",
+        "8135",
+        "8359"
+       ],
+       "brandId": 2002243,
+       "categoriesIds": [
+        "191",
+        "62",
+        "320"
+       ],
+       "productId": "8298",
+       "gtin": "1000111384",
+       "unitMultiplier": 1,
+       "measurementUnit": "un",
+       "isVariantOf": {
+        "productGroupID": "8298",
+        "name": "Aceite De Girasol TaTa 900 ml",
+        "additionalProperty": [],
+        "skuVariants": {
+         "activeVariations": {},
+         "slugsMap": {},
+         "availableVariations": {}
+        },
+        "hasVariant": [
+         {
+          "slug": "aceite-de-girasol-ta-ta-900-ml-1000111384-8298",
+          "offers": {
+           "lowPrice": 108,
+           "offers": [
+            {
+             "availability": "https://schema.org/InStock",
+             "price": 108,
+             "listPrice": 108
+            }
+           ]
+          },
+          "image": [
+           {
+            "url": "https://tatauy.vtexassets.com/arquivos/ids/789786/69791d72420c91deceebb53c.jpg?v=639051418973100000",
+            "alternateName": ""
+           }
+          ]
+         }
+        ]
+       },
+       "image": [
+        {
+         "url": "https://tatauy.vtexassets.com/arquivos/ids/789786/69791d72420c91deceebb53c.jpg?v=639051418973100000",
+         "alternateName": ""
+        }
+       ],
+       "offers": {
+        "lowPrice": 108,
+        "offers": [
+         {
+          "availability": "https://schema.org/InStock",
+          "price": 108,
+          "listPrice": 108,
+          "quantity": 10000,
+          "seller": {
+           "identifier": "1"
+          },
+          "itemOffered": {
+           "sku": "8298",
+           "name": "Aceite De Girasol TaTa 900 ml",
+           "gtin": "1000111384",
+           "image": [
+            {
+             "url": "https://tatauy.vtexassets.com/arquivos/ids/789786/69791d72420c91deceebb53c.jpg?v=639051418973100000",
+             "alternateName": ""
+            }
+           ],
+           "brand": {
+            "name": "TaTa"
+           },
+           "isVariantOf": {
+            "productGroupID": "8298",
+            "name": "Aceite De Girasol TaTa 900 ml"
+           },
+           "additionalProperty": []
+          }
+         }
+        ]
+       }
+      }
+     },
+     {
+      "node": {
+       "id": "3366",
+       "slug": "harina-0000-cañuelas-1-kg-3366",
+       "sku": "3366",
+       "hasMulticurrencyPrice": false,
+       "clusterHighlights": [
+        {
+         "id": "277",
+         "name": "Facebook-DPA"
+        },
+        {
+         "id": "2520",
+         "name": "Google-shopping-Shop"
+        },
+        {
+         "id": "6824",
+         "name": "Almacén"
+        },
+        {
+         "id": "7174",
+         "name": "Almacén"
+        },
+        {
+         "id": "7595",
+         "name": "Oferta-ta"
+        },
+        {
+         "id": "8687",
+         "name": "Productos Participantes"
+        }
+       ],
+       "brand": {
+        "brandName": "Cañuelas",
+        "name": "Cañuelas"
+       },
+       "name": "Harina 0000 CaÃ±uelas 1 Kg",
+       "collectionsIds": [
+        "277",
+        "278",
+        "2520",
+        "4618",
+        "6824",
+        "7174",
+        "7595",
+        "8687"
+       ],
+       "brandId": 2000325,
+       "categoriesIds": [
+        "191",
+        "193",
+        "337"
+       ],
+       "productId": "3386",
+       "gtin": "1000052144",
+       "unitMultiplier": 1,
+       "measurementUnit": "un",
+       "isVariantOf": {
+        "productGroupID": "3386",
+        "name": "Harina 0000 Cañuelas 1 Kg",
+        "additionalProperty": [],
+        "skuVariants": {
+         "activeVariations": {},
+         "slugsMap": {},
+         "availableVariations": {}
+        },
+        "hasVariant": [
+         {
+          "slug": "harina-0000-cañuelas-1-kg-3366",
+          "offers": {
+           "lowPrice": 45,
+           "offers": [
+            {
+             "availability": "https://schema.org/InStock",
+             "price": 45,
+             "listPrice": 59
+            }
+           ]
+          },
+          "image": [
+           {
+            "url": "https://tatauy.vtexassets.com/arquivos/ids/571331/Harina-0000-Canuelas-1-Kg-1-3378.jpg?v=638082705677330000",
+            "alternateName": "252892000-01"
+           },
+           {
+            "url": "https://tatauy.vtexassets.com/arquivos/ids/157251/HARINA-0000-CANUELAS-1-KG-2-3378.jpg?v=636865001348300000",
+            "alternateName": "252892000-02"
+           },
+           {
+            "url": "https://tatauy.vtexassets.com/arquivos/ids/157252/HARINA-0000-CANUELAS-1-KG-3-3378.jpg?v=636865001351300000",
+            "alternateName": "252892000-03"
+           },
+           {
+            "url": "https://tatauy.vtexassets.com/arquivos/ids/157253/HARINA-0000-CANUELAS-1-KG-4-3378.jpg?v=636865001353800000",
+            "alternateName": "252892000-04"
+           }
+          ]
+         }
+        ]
+       },
+       "image": [
+        {
+         "url": "https://tatauy.vtexassets.com/arquivos/ids/571331/Harina-0000-Canuelas-1-Kg-1-3378.jpg?v=638082705677330000",
+         "alternateName": "252892000-01"
+        },
+        {
+         "url": "https://tatauy.vtexassets.com/arquivos/ids/157251/HARINA-0000-CANUELAS-1-KG-2-3378.jpg?v=636865001348300000",
+         "alternateName": "252892000-02"
+        },
+        {
+         "url": "https://tatauy.vtexassets.com/arquivos/ids/157252/HARINA-0000-CANUELAS-1-KG-3-3378.jpg?v=636865001351300000",
+         "alternateName": "252892000-03"
+        },
+        {
+         "url": "https://tatauy.vtexassets.com/arquivos/ids/157253/HARINA-0000-CANUELAS-1-KG-4-3378.jpg?v=636865001353800000",
+         "alternateName": "252892000-04"
+        }
+       ],
+       "offers": {
+        "lowPrice": 45,
+        "offers": [
+         {
+          "availability": "https://schema.org/InStock",
+          "price": 45,
+          "listPrice": 59,
+          "quantity": 10000,
+          "seller": {
+           "identifier": "1"
+          },
+          "itemOffered": {
+           "sku": "3366",
+           "name": "Harina 0000 CaÃ±uelas 1 Kg",
+           "gtin": "1000052144",
+           "image": [
+            {
+             "url": "https://tatauy.vtexassets.com/arquivos/ids/571331/Harina-0000-Canuelas-1-Kg-1-3378.jpg?v=638082705677330000",
+             "alternateName": "252892000-01"
+            }
+           ],
+           "brand": {
+            "name": "Cañuelas"
+           },
+           "isVariantOf": {
+            "productGroupID": "3386",
+            "name": "Harina 0000 Cañuelas 1 Kg"
+           },
+           "additionalProperty": []
+          }
+         }
+        ]
+       }
+      }
+     }
+    ]
+   },
+   "metadata": null
+  }
+ }
+}

@@ -1,0 +1,113 @@
+{
+ "data": {
+  "cmsMenu": {
+   "sections": [
+    {
+     "data": {
+      "sidebar": [
+       {
+        "titleSidebar": "Destacados",
+        "link": "/",
+        "showFooter": false,
+        "subtitle": [
+         {
+          "name": "Vida Saludable",
+          "haslink": "/vidasaludable?utm_source=home&utm_medium=menu&utm_campaign=vidasaludable"
+         },
+         {
+          "name": "Oportunidades",
+          "haslink": "/ultimaoportunidad?utm_source=home&utm_medium=menu&utm_campaign=ultima_oportunidad"
+         },
+         {
+          "name": "Mailing",
+          "haslink": "https://grupovierci.uy/landing/mailing-tata/"
+         }
+        ]
+       }
+      ],
+      "categories": [
+       {
+        "name": "Almacén",
+        "link": "/almacen",
+        "slug": "almacen",
+        "hasChildren": true,
+        "children": [
+         {
+          "name": "Desayuno",
+          "link": "/almacen/desayuno",
+          "hasChildren": true,
+          "children": [
+           {
+            "name": "Café",
+            "link": "/almacen/desayuno/cafe"
+           },
+           {
+            "name": "Cereales",
+            "link": "/almacen/desayuno/cereales"
+           }
+          ]
+         },
+         {
+          "name": "Aceites y aderezos",
+          "link": "/almacen/aceites-y-aderezos",
+          "hasChildren": true,
+          "children": [
+           {
+            "name": "Aceites",
+            "link": "/almacen/aceites-y-aderezos/aceites"
+           },
+           {
+            "name": "Vinagres",
+            "link": "/almacen/aceites-y-aderezos/vinagres"
+           }
+          ]
+         }
+        ],
+        "src": "https://tatauy.vtexassets.com/assets/vtex.file-manager-graphql/images/a969421b-6f3f-4a80-b1ab-7bafa2100d70___7731cf210fdd410056dcee2d523da9ec.png"
+       },
+       {
+        "name": "Frescos",
+        "link": "/frescos",
+        "slug": "Frescos",
+        "hasChildren": true,
+        "children": [
+         {
+          "name": "Lácteos",
+          "link": "/frescos/lacteos",
+          "hasChildren": true,
+          "children": [
+           {
+            "name": "Huevos",
+            "link": "/frescos/lacteos/huevos"
+           },
+           {
+            "name": "Leches",
+            "link": "/frescos/lacteos/leches"
+           }
+          ]
+         },
+         {
+          "name": "Pastas y masas",
+          "link": "/frescos/pastas-y-masas",
+          "hasChildren": true,
+          "children": [
+           {
+            "name": "Masas de tarta",
+            "link": "/frescos/pastas-y-masas/masas-de-tarta"
+           },
+           {
+            "name": "Masas de empanada",
+            "link": "/frescos/pastas-y-masas/masas-de-empanada"
+           }
+          ]
+         }
+        ],
+        "src": "https://tatauy.vtexassets.com/assets/vtex.file-manager-graphql/images/0ce5f231-f23e-43dc-9b71-43b15437af58___b67054ac605f08095b074e0b4fee9304.png"
+       }
+      ]
+     }
+    }
+   ]
+  }
+ }
+}
