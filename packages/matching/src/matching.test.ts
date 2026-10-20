@@ -44,6 +44,19 @@ describe("parseSize", () => {
     ["Pack x 2 Yerba Canarias 1 kg", { amount: 2000, unit: "g" }],
     ["Yerba Armiño Suave 1kg+100gr", { amount: 1100, unit: "g" }],
     ["Alfajor Portezuelo Pack 6 U", { amount: 6, unit: "un" }],
+    // Casos reales que daban precios por kilo absurdos.
+    // Dos paquetes de 1 kg más 250 g de regalo ($ 388, cuando 1 kg sale $ 194).
+    ["Pack 2 un. yerba CANARIAS serena 1 kg + 250 g", { amount: 2250, unit: "g" }],
+    ["Pack x 2 yerba CANARIAS suave 1 kg + 250 g regalo", { amount: 2250, unit: "g" }],
+    ["Te Canarias Hierbas Digestivas 10 Sobres 1.5Gr", { amount: 10, unit: "un" }],
+    ["Te Canarias Negro 10 Sobres 2Gr", { amount: 10, unit: "un" }],
+    ["Te Canarias Acai Verde 10Sob Sabor Manzana", { amount: 10, unit: "un" }],
+    ["Té Canarias Manzanilla 20 U", { amount: 20, unit: "un" }],
+    ["Edulcorante Hileret 100 sobres", { amount: 100, unit: "un" }],
+    ["Repasador Estampado Diseño 3 (40 x 60 cm)", null],
+    ["KIT Regalo Fácil Diseño Infantil 30 x 45 cm", null],
+    ["SAMSUNG A55 5G 128 Gb Amarillo", null],
+    ["Jamón Crudo Español EL POZO Serrano x 50 g", { amount: 50, unit: "g" }],
   ])("%s", (name, expected) => {
     expect(parseSize(name)).toEqual(expected);
   });
