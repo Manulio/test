@@ -14,7 +14,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: precios
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - precios-data:/var/lib/postgresql/data
     healthcheck:

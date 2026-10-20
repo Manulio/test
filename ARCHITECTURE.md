@@ -69,4 +69,4 @@ Reglas de cortesía, ya implementadas en `http.ts` y `robots.ts`: una request a 
 2. Más cadenas (Tienda Inglesa, Ta-Ta, El Dorado) y ajuste del matching con datos reales. Pendiente de correr `probe.mjs` con acceso a los sitios
 3. 🟡 Lista de compras óptima ✅. Faltan las cuentas opcionales con Supabase Auth (para sincronizar la lista) y el service worker
 4. Importación del SIPC y pantalla `/admin` para revisar los matches dudosos
-5. Historial con gráficos, alertas de precio, escaneo de código de barras y precios por sucursal
+5. 🟡 Historial con gráfico ✅, página de ofertas ✅, búsqueda y escaneo de código de barras ✅. Faltan las alertas de precio y los precios por sucursal

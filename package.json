@@ -8,6 +8,7 @@
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "db:migrate": "pnpm --filter @precios/db migrate",
-    "scrape": "pnpm --filter @precios/scrapers scrape"
+    "scrape": "pnpm --filter @precios/scrapers scrape",
+    "import:sipc": "pnpm --filter @precios/db import:sipc"
   }
 }
