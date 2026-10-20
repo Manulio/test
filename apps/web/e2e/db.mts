@@ -1,4 +1,4 @@
-// Prepara la base de las e2e. Se corre con tsx desde global-setup: `tsx e2e/db.mts reset|history`.
+// Prepara la base de las e2e. Se corre con tsx desde e2e/server.mjs: `tsx e2e/db.mts reset|history`.
 import { createDb } from "@precios/db";
 
 const db = createDb();

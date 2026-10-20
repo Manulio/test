@@ -1,7 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { defineConfig, devices } from "@playwright/test";
 
-// Siempre una base de test: el global setup la vacía y la vuelve a sembrar.
+// Siempre una base de test: e2e/server.mjs la vacía y la vuelve a sembrar antes de levantar la app.
 const DATABASE_URL = process.env.E2E_DATABASE_URL ?? "postgres://postgres:postgres@localhost:5434/precios_test";
 if (!/_test$/.test(new URL(DATABASE_URL).pathname)) {
   throw new Error(`Las e2e borran la base: ${DATABASE_URL} no parece una base de test (tiene que terminar en _test)`);
@@ -20,7 +20,6 @@ const baseURL = `http://localhost:${process.env.E2E_PORT}`;
 export default defineConfig({
   testDir: "e2e",
   outputDir: "e2e/test-results",
-  globalSetup: "./e2e/global-setup.ts",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
