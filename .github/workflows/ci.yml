@@ -54,6 +54,9 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # El runner trae el repositorio apt de Microsoft, que a veces responde 403 ("no longer signed") y hace
+      # fallar el apt-get update de `--with-deps`. No usamos nada de ahí: se saca antes de instalar.
+      - run: sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list /etc/apt/sources.list.d/microsoft-prod.sources
       - run: pnpm --filter web exec playwright install --with-deps chromium
       - run: pnpm --filter web e2e
       - uses: actions/upload-artifact@v4
