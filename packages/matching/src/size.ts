@@ -38,6 +38,8 @@ const NUM = String.raw`(\d+(?:[.,]\d+)?)`;
 const MULTI = new RegExp(String.raw`\b(\d+)\s*x\s*${NUM}\s*(${UNIT_RE})\b`);
 // "1,5 lt", "500g"
 const SINGLE = new RegExp(String.raw`${NUM}\s*(${UNIT_RE})\b`, "g");
+// "pack x 2", "pack 6" (sin unidad: la cantidad de envases)
+const PACK = new RegExp(String.raw`\bpack\s*(?:x\s*)?(\d+)\b(?![.,]\d)(?!\s*(?:${UNIT_RE})\b)`);
 // "x 12", "x12 un" (huevos, pañales)
 const COUNT = /\bx\s*(\d+)\b/;
 
@@ -55,12 +57,21 @@ export function parseSize(name: string): Size | null {
     return { amount: round(Number(multi[1]) * toNumber(multi[2]!) * u.factor), unit: u.unit };
   }
 
-  // Si aparece más de una medida, nos quedamos con la última ("Yerba 1 kg 1000g" es raro, pero pasa).
-  const singles = [...text.matchAll(SINGLE)];
-  const last = singles.at(-1);
-  if (last) {
-    const u = UNITS[last[2]!]!;
-    return { amount: round(toNumber(last[1]!) * u.factor), unit: u.unit };
+  const singles = [...text.matchAll(SINGLE)].map((m) => {
+    const u = UNITS[m[2]!]!;
+    return { amount: toNumber(m[1]!) * u.factor, unit: u.unit };
+  });
+  if (singles.length > 0) {
+    // "Yerba 1 kg + 100 g gratis" es 1,1 kg.
+    if (/\d\s*[a-z]*\s*\+\s*\d/i.test(name) && singles.every((x) => x.unit === singles[0]!.unit)) {
+      return { amount: round(singles.reduce((sum, x) => sum + x.amount, 0)), unit: singles[0]!.unit };
+    }
+    // Si aparece más de una medida, nos quedamos con la última ("Yerba 1 kg 1000g" es raro, pero pasa).
+    const last = singles.at(-1)!;
+    // "Pack x 2 Yerba 1 kg" son 2 kg.
+    const pack = PACK.exec(text);
+    const times = pack ? Number(pack[1]) : 1;
+    return { amount: round(last.amount * times), unit: last.unit };
   }
 
   const count = COUNT.exec(text);

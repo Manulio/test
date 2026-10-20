@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
+  AUTO_MATCH_THRESHOLD,
   canonicalEan,
   isValidEan,
   matchProduct,
   normalizeText,
   parseSize,
+  scoreCandidate,
   similarity,
   unitPrice,
   type Candidate,
@@ -39,6 +41,9 @@ describe("parseSize", () => {
     ["Agua Salus pack 6 x 2.25 L", { amount: 13500, unit: "ml" }],
     ["Huevos colorados x 12", { amount: 12, unit: "un" }],
     ["Aceite Óptimo 900 cc", { amount: 900, unit: "ml" }],
+    ["Pack x 2 Yerba Canarias 1 kg", { amount: 2000, unit: "g" }],
+    ["Yerba Armiño Suave 1kg+100gr", { amount: 1100, unit: "g" }],
+    ["Alfajor Portezuelo Pack 6 U", { amount: 6, unit: "un" }],
   ])("%s", (name, expected) => {
     expect(parseSize(name)).toEqual(expected);
   });
@@ -96,7 +101,76 @@ describe("matchProduct", () => {
     expect(result).toMatchObject({ productId: 3 });
   });
 
+  it("ignora conectores, envases y puntos sueltos", () => {
+    const a = { id: 1, name: "Dulce De Leche Los Nietitos Pote 1Kg .", brand: "LOS NIETITOS", ean: null, sizeAmount: 1000, sizeUnit: "g" as const };
+    expect(scoreCandidate({ name: "Dulce de leche Los Nietitos 1 kg", brand: "Los Nietitos" }, a)).toBe(1);
+    const b = { id: 2, name: "Aceite Delicia Maiz 900Cc", brand: "DELICIA", ean: null, sizeAmount: 900, sizeUnit: "ml" as const };
+    expect(scoreCandidate({ name: "Aceite de maíz Delicia 900 cc", brand: "Delicia" }, b)).toBe(1);
+  });
+
+  it("no confunde números que no son tamaño", () => {
+    const harina = { id: 1, name: "Harina Cololo 0000 1kg", brand: "COLOLO", ean: null, sizeAmount: 1000, sizeUnit: "g" as const };
+    expect(scoreCandidate({ name: "Harina 000 Cololó 1 kg", brand: "Cololó" }, harina)).toBe(0);
+    expect(scoreCandidate({ name: "Harina 0000 Cololó 1 kg", brand: "Cololó" }, harina)).toBe(1);
+  });
+
   it("no asocia productos sin relación", () => {
     expect(matchProduct({ name: "Detergente Nevex 500 ml", brand: "Nevex" }, catalog).kind).toBe("none");
+  });
+
+  describe("mismo producto escrito distinto", () => {
+    const score = (a: string, b: string, brandA: string | null = null, brandB: string | null = null) =>
+      scoreCandidate({ name: a, brand: brandA }, { id: 1, name: b, brand: brandB, ean: null, sizeAmount: null, sizeUnit: null });
+
+    it.each([
+      ["Yerba Mate Baldo 1 Kg", "Yerba Baldo 1Kg", "Baldo", "BALDO"],
+      ["Galletas Agridulces 9 De Oro 100 G", "Galleta 9 De Oro Agridulce 100gr", null, null],
+      ["Mermelada Higo Los Nietitos 500 G", "Mermelada Los Nietitos Higo Pote 500 g", null, null],
+      ["Aderezo Mayonesa Natura 250 Ml", "Mayonesa Natura Doypack 250Cc", "Natura", "Natura"],
+      ["Jabón de tocador Dove Blanco 90 grs", "Jabon De Tocador Dove Original Blanco 90 g", "Dove", "Dove"],
+      // La leche común es la fresca; "ultrapasteurizada" es "ultra" abreviado.
+      ["Leche Fresca Entera Conaprole Sachet 1 L", "Leche Conaprole Entera 1Lt", "Conaprole", "CONAPROLE"],
+      ["Leche Fresca Descremada Conaprole Sachet 1 L", "Leche Conaprole Descremada 1Lt .", "Conaprole", "CONAPROLE"],
+      ["Leche Ultrapasteurizada Entera Conaprole Sachet 1 L", "Leche ultra CONAPROLE entera 1 L", "Conaprole", "CONAPROLE"],
+    ])("%s = %s", (a, b, brandA, brandB) => {
+      expect(score(a, b, brandA, brandB)).toBeGreaterThanOrEqual(AUTO_MATCH_THRESHOLD);
+    });
+
+    it.each([
+      // Variante de un solo lado.
+      ["Mermelada de durazno Los Nietitos 400 g", "Mermelada Los Nietitos 0% Durazno 400Gr"],
+      ["Margarina Qualy 250 g", "Margarina Qualy Light 250 g"],
+      // Pack contra unidad, o tamaño de un solo lado.
+      ["Pack x 2 Yerba Canarias 1 kg", "Yerba Canarias 1Kg"],
+      ["Alfajor Chocolate Portezuelo Pack 6 U", "Alfajor Portezuelo Chocolate"],
+      // Cantidades que no son tamaño.
+      ["Molde para 6 muffins antiadherente", "Molde 12 cavidades antiadherente"],
+      // "mate" solo es relleno en la yerba.
+      ["Termo mate acero inoxidable 1 L", "Termo acero inoxidable 1 L"],
+      // "fresca" solo es relleno en la leche.
+      ["Pasta fresca tallarines Adria 500 g", "Pasta tallarines Adria 500 g"],
+    ])("%s ≠ %s", (a, b) => {
+      expect(score(a, b)).toBeLessThan(AUTO_MATCH_THRESHOLD);
+    });
+
+    // Conaprole vende cada una con su EAN, y El Dorado tiene la fresca y la ultra a la vez: no se juntan.
+    it.each([
+      ["Leche Conaprole Entera 1Lt", "Leche ultra CONAPROLE entera 1 L"],
+      ["Leche Fresca Entera Conaprole Sachet 1 L", "Leche Conaprole Entera Ultra 1Lt ."],
+      ["Leche Conaprole Entera 1Lt", "Leche Conaprole Larga Vida Entera Caja 1Lt"],
+      ["Leche ultra CONAPROLE entera 1 L", "Leche Entera Larga Vida Conaprole 1 L"],
+      ["Leche Conaprole Entera 1Lt", "Leche Conaprole UHT Entera 1 L"],
+      ["Leche Conaprole Descremada 1Lt .", "Leche Ultra Descremada Conaprole 1 L"],
+      ["Leche Conaprole Entera 1Lt", "Leche Conaprole Descremada 1Lt ."],
+      ["Leche ultra CONAPROLE entera 1 L", "Leche Conaprole Ultra Descremada 1Lt ."],
+    ])("leche: %s ≠ %s", (a, b) => {
+      expect(score(a, b, "Conaprole", "CONAPROLE")).toBeLessThan(AUTO_MATCH_THRESHOLD);
+    });
+
+    it("no se fía de una marca que el otro ni nombra", () => {
+      expect(score("Postre de dulce de leche 1 un.", "Postre Royarina Dulce De Leche 1 un.", null, "Royarina")).toBeLessThan(
+        AUTO_MATCH_THRESHOLD,
+      );
+    });
   });
 });
