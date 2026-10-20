@@ -141,21 +141,42 @@ export function beforePrice(html: string): number | null {
   return value > 0 ? value : null;
 }
 
+/**
+ * En lo que se vende al peso (fiambres, quesos: "Jamón crudo x 50 g"), el JSON-LD trae el precio por kilo
+ * y la ficha muestra aparte el de la porción del nombre: "$ 2620 / kg" y "$ 131". Devuelve los dos.
+ */
+export function weighablePrices(html: string): { perKg: number; portion: number } | null {
+  const section = detailSection(html);
+  const m = section.match(
+    /product-price-weighable[\s\S]*?<span class="val">([^<]*)<\/span>[\s\S]*?class="product-prices[^"]*"[\s\S]*?<span class="val">([^<]*)<\/span>/,
+  );
+  if (!m) return null;
+  const perKg = parsePesos(m[1]!);
+  const portion = parsePesos(m[2]!);
+  return perKg > 0 && portion > 0 && portion < perKg ? { perKg, portion } : null;
+}
+
 /** Convierte una ficha de producto en un listado; null si no tiene datos o precio. */
 export function parseProductPage(html: string, url: string): RawListing | null {
   const p = findProductJsonLd(html);
   if (!p?.sku || !p.name) return null;
   // Envases retornables y similares: figuran en el sitemap pero no se venden.
   if (/no comerciable/i.test(p.name)) return null;
-  const price = Number(p.offers?.price);
-  if (!(price > 0)) return null;
+  const jsonPrice = Number(p.offers?.price);
+  if (!(jsonPrice > 0)) return null;
+  // Al peso: se guarda el precio de la porción del nombre, que es el tamaño del producto (si no, un jamón
+  // de "x 50 g" a $ 2620 el kilo parecía costar $ 52.400 el kilo).
+  const weighable = weighablePrices(html);
+  const factor = weighable ? weighable.portion / weighable.perKg : 1;
+  const price = weighable ? weighable.portion : jsonPrice;
   if (p.offers?.priceCurrency && p.offers.priceCurrency !== "UYU") return null;
 
   const brandName = typeof p.brand === "string" ? p.brand : p.brand?.name;
   const brand = brandName && brandName.trim() !== "-" ? brandName.trim() : null;
   const image = Array.isArray(p.image) ? p.image[0] : p.image;
   const promos = promoTexts(html);
-  const before = beforePrice(html);
+  const tachado = beforePrice(html);
+  const before = tachado == null ? null : Math.round(tachado * factor * 100) / 100;
 
   return {
     externalId: String(p.sku),

@@ -8,7 +8,16 @@
  * producto por vez: si dos cadenas crean el mismo producto a la vez, quedaría duplicado.
  */
 import { parseArgs } from "node:util";
-import { ACTIVE_CHAINS, createDb, failScrapeRun, finishScrapeRun, ingestListings, startScrapeRun } from "@precios/db";
+import {
+  ACTIVE_CHAINS,
+  createDb,
+  failScrapeRun,
+  findExactDuplicates,
+  finishScrapeRun,
+  ingestListings,
+  mergeDuplicateProducts,
+  startScrapeRun,
+} from "@precios/db";
 import { scrapers } from "../src/chains";
 import type { RawListing } from "../src/types";
 
@@ -83,5 +92,11 @@ async function run(slug: string): Promise<boolean> {
 }
 
 const results = await Promise.all(slugs.map(run));
+if (db) {
+  // Lo que se cargó separado y es seguro que es lo mismo (mismo SKU en Disco/Devoto/Geant, o mismo nombre y
+  // tamaño): se junta para que no aparezca dos veces en la web.
+  const merged = await mergeDuplicateProducts(db, await findExactDuplicates(db), { allowSameChain: true });
+  if (merged > 0) console.log(`Productos duplicados juntados: ${merged}`);
+}
 await db?.$client.end();
 process.exit(results.every(Boolean) ? 0 : 1);

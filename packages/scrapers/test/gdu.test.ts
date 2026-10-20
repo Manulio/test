@@ -16,6 +16,8 @@ const plain = fixture("gdu-product-plain.html");
 const santander = fixture("gdu-product-santander.html");
 // Ficha real de Geant rebajada: $ 668 tachado, $ 439 ahora, y 10 % más con Santander.
 const sale = fixture("gdu-product-sale.html");
+// Ficha real de Disco al peso: "$ 2620 / kg" y "$ 131" por los 50 g del nombre; el JSON-LD dice 2620.
+const weighable = fixture("gdu-product-weighable.html");
 const chain = { slug: "disco", name: "Disco", website: "https://www.disco.com.uy" };
 
 describe("parseProductPage", () => {
@@ -57,6 +59,12 @@ describe("parseProductPage", () => {
     // Sin precio tachado (o uno que no es mayor), no hay oferta.
     expect(parseProductPage(plain, "u")).toMatchObject({ salePrice: null });
     expect(parseProductPage(sale.replace('<span class="val">668</span>', '<span class="val">439</span>'), "u")).toMatchObject({ listPrice: 439, salePrice: null });
+    expect(parseProductPage(weighable, "u")).toMatchObject({
+      externalId: "362382",
+      name: "Jamón Crudo Español EL POZO Serrano x 50 g",
+      listPrice: 131,
+      salePrice: null,
+    });
     expect(parseProductPage("<html></html>", "u")).toBeNull();
     expect(parseProductPage(plain.replace(/"price":[\d.]+/, '"price":0'), "u")).toBeNull();
     expect(parseProductPage(plain.replace('"priceCurrency":"UYU"', '"priceCurrency":"USD"'), "u")).toBeNull();
