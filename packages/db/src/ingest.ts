@@ -10,6 +10,7 @@ import {
 import { eq, sql } from "drizzle-orm";
 import { isActiveChain } from "./active-chains";
 import type { Db, Executor } from "./client";
+import { SHARED_CATALOGS } from "./rematch";
 import { chains, listings, prices, products } from "./schema";
 
 export interface ChainInfo {
@@ -141,7 +142,24 @@ type MatchOutcome = Pick<
 >;
 
 /** Decide a qué producto del catálogo corresponde un listado nuevo, o crea uno. */
+/** Si otra cadena con la misma tienda online (Disco, Devoto, Geant) ya tiene este SKU, su producto. */
+async function sharedCatalogProduct(db: Executor, raw: RawListing, chainId: number): Promise<number | null> {
+  const [me] = await db.select({ slug: chains.slug }).from(chains).where(eq(chains.id, chainId));
+  const group = SHARED_CATALOGS.find((g) => g.includes(me?.slug ?? ""));
+  if (!group) return null;
+  const [row] = await db.execute<{ product_id: number }>(sql`
+    select l.product_id from listings l join chains c on c.id = l.chain_id
+    where l.external_id = ${raw.externalId} and l.source = ${raw.source ?? "scraper"} and l.chain_id <> ${chainId}
+      and l.product_id is not null and c.slug in ${[...group]}
+    limit 1
+  `);
+  return row?.product_id ?? null;
+}
+
 async function resolveProduct(db: Executor, raw: RawListing, chainId: number): Promise<MatchOutcome> {
+  const shared = await sharedCatalogProduct(db, raw, chainId);
+  if (shared != null) return { productId: shared, matchStatus: "auto", matchScore: 1, matchCandidateId: null };
+
   const result = matchProduct(raw, await findCandidates(db, raw, chainId));
   switch (result.kind) {
     case "ean":

@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import { fromActiveChain } from "./active-chains";
+import { scrapedChainIds } from "./queries";
 import type { Db } from "./client";
 
 export interface PricePoint {
@@ -28,6 +29,8 @@ export async function priceHistory(db: Db, productId: number, days = 180): Promi
     join chains c on c.id = l.chain_id
     join prices p on p.listing_id = l.id
     where l.product_id = ${productId} and ${fromActiveChain()} and p.available and p.date >= current_date - ${days}::int
+      -- Las medianas del SIPC no se mezclan con los precios online de una cadena que se scrapea.
+      and (l.source = 'scraper' or l.chain_id not in ${scrapedChainIds})
     order by c.slug, p.date, (l.source = 'sipc'), coalesce(p.sale_price, p.list_price)
   `);
 

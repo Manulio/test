@@ -4,7 +4,7 @@ import { demoData } from "../scripts/demo-data";
 import { createDb, type Db } from "./client";
 import { ingestListings } from "./ingest";
 import { compareChains } from "./compare";
-import { findDuplicateProducts, mergeDuplicateProducts } from "./rematch";
+import { findDuplicateProducts, findExactDuplicates, mergeDuplicateProducts } from "./rematch";
 import { confirmReviewMatch, listReviewQueue, rejectReviewMatch } from "./review";
 import { listings, products } from "./schema";
 import { catalogChains, categoryCounts, findProductByEan, getProduct, listCatalog, searchProducts } from "./queries";
@@ -161,6 +161,13 @@ describe.skipIf(!url)("ingesta y búsqueda", () => {
     expect(offers.at(-1)).toMatchObject({ chainSlug: "macromercado", source: "sipc", price: 10, date: old });
     expect(offers[0]!.source).toBe("scraper");
     expect(offers.some((o) => o.chainSlug === "kinko")).toBe(false);
+
+    // Disco se scrapea: su precio del SIPC no aparece ni siquiera en un producto que su tienda online no tiene.
+    const soloSipc = { externalId: "sipc-2", url: "https://example.com", name: "Producto Solo Sipc Prueba 1 kg", listPrice: 30, available: true, source: "sipc" as const, date: old };
+    await ingestListings(db, disco.chain, [soloSipc]);
+    await ingestListings(db, { slug: "macromercado", name: "Macromercado", website: "https://example.com" }, [{ ...soloSipc, listPrice: 28 }]);
+    const [solo] = await searchProducts(db, "producto solo sipc prueba");
+    expect(solo!.offers.map((o) => o.chainSlug)).toEqual(["macromercado"]);
   });
 
   it("no junta dos productos que la misma cadena vende por separado, y junta duplicados entre cadenas", async () => {
@@ -455,5 +462,30 @@ describe.skipIf(!url)("ingesta y búsqueda", () => {
     expect(ranking.variants).toEqual([]); // "compuesta" aparece en un solo producto: no alcanza para sugerirla
     expect((await brandRanking(db, "yerba compuesta"))!.brands.map((b) => b.brand)).toEqual(["Tercera"]);
     expect(await brandRanking(db, "xqzwv")).toBeNull();
+  });
+
+  it("junta el mismo SKU de Disco/Devoto/Geant y los productos con el mismo nombre y tamaño", async () => {
+    const item = (externalId: string, name: string, ean: string | null) => ({ externalId, url: "https://example.com", name, ean, listPrice: 100, available: true });
+    const chain = (slug: string) => ({ slug, name: slug, website: "https://example.com" });
+    // Al cargar: Devoto reusa el producto de Disco con el mismo SKU aunque el nombre no se parezca.
+    await ingestListings(db, chain("disco"), [item("sku-777", "Galletitas Dup Prueba Chocolate 120 g", null)]);
+    await ingestListings(db, chain("devoto"), [item("sku-777", "GALLETITAS dup prb choc. x120g", null)]);
+    const bySku = await db.execute<{ n: number }>(sql`select count(distinct product_id)::int as n from listings where external_id = 'sku-777'`);
+    expect(bySku[0]!.n).toBe(1);
+
+    // El mismo artículo con dos EAN (cambio de envase), vendido por la misma cadena: dos productos al cargar...
+    await ingestListings(db, chain("disco"), [
+      item("dup-a", "Yerba Duplicada Prueba 1 kg", "7730241003654"),
+      item("dup-b", "Yerba Duplicada Prueba 1 kg", "7730241003876"),
+    ]);
+    const ids = async () =>
+      new Set([...(await db.execute<{ product_id: number }>(sql`select product_id from listings where external_id in ('dup-a', 'dup-b')`))].map((r) => r.product_id));
+    expect((await ids()).size).toBe(2);
+    // ...que el paso de duplicados exactos junta en uno.
+    const pairs = await findExactDuplicates(db);
+    expect(pairs.some((p) => p.keep.name === "Yerba Duplicada Prueba 1 kg")).toBe(true);
+    expect(await mergeDuplicateProducts(db, pairs, { allowSameChain: true })).toBeGreaterThan(0);
+    expect((await ids()).size).toBe(1);
+    expect(await findExactDuplicates(db)).toEqual([]);
   });
 });

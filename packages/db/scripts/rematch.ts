@@ -4,10 +4,16 @@
  *   pnpm --filter @precios/db rematch --apply   # los junta
  */
 import { createDb } from "../src/client";
-import { findDuplicateProducts, mergeDuplicateProducts } from "../src/rematch";
+import { findDuplicateProducts, findExactDuplicates, mergeDuplicateProducts } from "../src/rematch";
 
 const apply = process.argv.includes("--apply");
 const db = createDb();
+
+// Primero los seguros (mismo SKU en Disco/Devoto/Geant, o mismo nombre y tamaño), después los parecidos.
+const exact = await findExactDuplicates(db);
+console.log(`${exact.length} pares exactos (mismo SKU o mismo nombre y tamaño).`);
+if (apply) console.log(`Juntados: ${await mergeDuplicateProducts(db, exact, { allowSameChain: true })}`);
+
 const pairs = await findDuplicateProducts(db);
 
 for (const { keep, merge, score } of pairs) {

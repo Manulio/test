@@ -38,10 +38,21 @@ export const MAX_PRICE_AGE_DAYS = 7;
 /** El SIPC (datos abiertos del MEF) se publica con meses de atraso: se muestra con su fecha hasta esta antigüedad. */
 const SIPC_MAX_AGE_DAYS = 200;
 
-/** Precio vigente para mostrar: scrapeado reciente, o del SIPC aunque tenga meses (necesita `l` = listings y `p` = prices). */
+/**
+ * Cadenas con precios scrapeados en la última semana. Para esas no se muestran los del SIPC: son medianas de
+ * las sucursales de hace meses, y al lado del precio de hoy de la misma cadena se ven viejos y repetidos.
+ */
+export const scrapedChainIds = sql`(
+  select distinct chain_id from listings where source = 'scraper' and last_seen_at > now() - interval '7 days'
+)`;
+
+/**
+ * Precio vigente para mostrar (necesita `l` = listings y `p` = prices): scrapeado en la última semana, o del
+ * SIPC con su fecha, aunque tenga meses, solo para las cadenas que no se pueden scrapear (Tienda Inglesa, Macro).
+ */
 const isCurrentPrice = (p: ReturnType<typeof sql.raw>) => sql`(
-  ${p}.date >= current_date - ${MAX_PRICE_AGE_DAYS}::int
-  or (l.source = 'sipc' and ${p}.date >= current_date - ${SIPC_MAX_AGE_DAYS}::int)
+  (l.source = 'scraper' and ${p}.date >= current_date - ${MAX_PRICE_AGE_DAYS}::int)
+  or (l.source = 'sipc' and ${p}.date >= current_date - ${SIPC_MAX_AGE_DAYS}::int and l.chain_id not in ${scrapedChainIds})
 )`;
 
 export interface ProductRow extends Record<string, unknown> {
