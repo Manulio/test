@@ -1,0 +1,54 @@
+[
+  {
+    "productId": "1001",
+    "productName": "Leche Entera Conaprole 1 L",
+    "brand": "Conaprole",
+    "link": "https://www.disco.com.uy/leche-entera-conaprole-1-l/p",
+    "items": [
+      {
+        "itemId": "5001",
+        "name": "Leche Entera Conaprole 1 L",
+        "ean": "7730900571104",
+        "images": [{ "imageUrl": "https://img.example/leche.jpg" }],
+        "sellers": [
+          {
+            "sellerDefault": true,
+            "commertialOffer": {
+              "Price": 49,
+              "ListPrice": 52,
+              "PriceWithoutDiscount": 52,
+              "AvailableQuantity": 100,
+              "IsAvailable": true,
+              "PromotionTeasers": [{ "Name": "Precio especial lácteos" }]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "1002",
+    "productName": "Agua Salus sin gas",
+    "brand": "Salus",
+    "link": "https://www.disco.com.uy/agua-salus/p",
+    "items": [
+      {
+        "itemId": "5002",
+        "name": "600 ml",
+        "nameComplete": "Agua Salus sin gas 600 ml",
+        "ean": "",
+        "sellers": [
+          { "sellerDefault": true, "commertialOffer": { "Price": 45, "ListPrice": 45, "AvailableQuantity": 0 } }
+        ]
+      },
+      {
+        "itemId": "5003",
+        "name": "2,25 L",
+        "nameComplete": "Agua Salus sin gas 2,25 L",
+        "sellers": [
+          { "sellerDefault": true, "commertialOffer": { "Price": 0, "ListPrice": 0, "AvailableQuantity": 0 } }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,19 @@
+name: Sondeo de plataformas
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - packages/scrapers/scripts/probe.mjs
+      - .github/workflows/probe.yml
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node packages/scrapers/scripts/probe.mjs

@@ -1,0 +1,150 @@
+{
+ "data": {
+  "product": {
+   "id": "3366",
+   "slug": "harina-0000-cañuelas-1-kg-3366",
+   "sku": "3366",
+   "sellers": [
+    {
+     "sellerName": "electro",
+     "sellerId": "1"
+    }
+   ],
+   "name": "Harina 0000 CaÃ±uelas 1 Kg",
+   "gtin": "1000052144",
+   "description": "Harina 0000 Cañuelas 1 Kg",
+   "clusterHighlights": [
+    {
+     "id": "277",
+     "name": "Facebook-DPA"
+    },
+    {
+     "id": "2520",
+     "name": "Google-shopping-Shop"
+    },
+    {
+     "id": "6824",
+     "name": "Almacén"
+    },
+    {
+     "id": "7174",
+     "name": "Almacén"
+    },
+    {
+     "id": "7595",
+     "name": "Oferta-ta"
+    },
+    {
+     "id": "8687",
+     "name": "Productos Participantes"
+    }
+   ],
+   "categoryId": "337",
+   "categoriesIds": [
+    "191",
+    "193",
+    "337"
+   ],
+   "unitMultiplier": 1,
+   "measurementUnit": "un",
+   "ean": "7730376000337",
+   "hasMulticurrencyPrice": false,
+   "brandId": 2000325,
+   "collectionsIds": [
+    "277",
+    "278",
+    "2520",
+    "4618",
+    "6824",
+    "7174",
+    "7595",
+    "8687"
+   ],
+   "productId": "3386",
+   "isVariantOf": {
+    "productGroupID": "3386",
+    "name": "Harina 0000 Cañuelas 1 Kg",
+    "additionalProperty": [],
+    "hasVariant": [
+     {
+      "sku": "3366",
+      "slug": "harina-0000-cañuelas-1-kg-3366",
+      "additionalProperty": [],
+      "offers": {
+       "offers": [
+        {
+         "availability": "https://schema.org/InStock",
+         "quantity": 10000
+        }
+       ]
+      }
+     }
+    ],
+    "skuVariants": {
+     "activeVariations": {},
+     "slugsMap": {},
+     "availableVariations": {}
+    }
+   },
+   "image": [
+    {
+     "url": "https://tatauy.vtexassets.com/arquivos/ids/571331/Harina-0000-Canuelas-1-Kg-1-3378.jpg?v=638082705677330000",
+     "alternateName": "252892000-01"
+    },
+    {
+     "url": "https://tatauy.vtexassets.com/arquivos/ids/157251/HARINA-0000-CANUELAS-1-KG-2-3378.jpg?v=636865001348300000",
+     "alternateName": "252892000-02"
+    },
+    {
+     "url": "https://tatauy.vtexassets.com/arquivos/ids/157252/HARINA-0000-CANUELAS-1-KG-3-3378.jpg?v=636865001351300000",
+     "alternateName": "252892000-03"
+    },
+    {
+     "url": "https://tatauy.vtexassets.com/arquivos/ids/157253/HARINA-0000-CANUELAS-1-KG-4-3378.jpg?v=636865001353800000",
+     "alternateName": "252892000-04"
+    }
+   ],
+   "brand": {
+    "name": "Cañuelas"
+   },
+   "offers": {
+    "lowPrice": 45,
+    "offers": [
+     {
+      "availability": "https://schema.org/InStock",
+      "price": 45,
+      "listPrice": 59,
+      "seller": {
+       "identifier": "1"
+      }
+     }
+    ]
+   },
+   "breadcrumbList": {
+    "itemListElement": [
+     {
+      "item": "/almacen/",
+      "name": "Almacén",
+      "position": 1
+     },
+     {
+      "item": "/almacen/arroz-harina-y-legumbres/",
+      "name": "Arroz, Harina y Legumbres",
+      "position": 2
+     },
+     {
+      "item": "/almacen/arroz-harina-y-legumbres/harina-y-polenta/",
+      "name": "Harina y Polenta",
+      "position": 3
+     },
+     {
+      "item": "/harina-0000-cañuelas-1-kg-3366/p",
+      "name": "Harina 0000 Cañuelas 1 Kg",
+      "position": 4
+     }
+    ]
+   },
+   "additionalProperty": []
+  }
+ }
+}

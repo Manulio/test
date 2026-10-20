@@ -1,0 +1,7 @@
+id.establecimientos;razon.social;nombre.sucursal;direccion;ccz;barrio;cajas;cadena;long;lat;ciudad;depto;id.depto;localidad;superficie (m2)
+1;CAFITUR S.A.;Expres 2;AVDA. MILLAN 2683;16;Reducto;2;Sin Cadena;-34,87;-56,18;Montevideo;Montevideo;1;1020;280
+10;Ta-Ta S.A.;Ta-Ta Unión;8 de Octubre 3800;6;Unión;8;Ta - Ta;-34,87;-56,14;Montevideo;Montevideo;1;1020;900
+11;Ta-Ta S.A.;Ta-Ta Paysandú;18 de Julio 1000;;;6;Ta - Ta;-32,3;-58,0;Paysandú;Paysandú;11;;700
+12;Ta-Ta S.A.;Ta-Ta Salto;Uruguay 500;;;6;Ta - Ta;-31,3;-57,9;Salto;Salto;15;;650
+20;Supermercados Disco;Disco Pocitos;Av. Brasil 2500;5;Pocitos;10;Disco;-34,9;-56,15;Montevideo;Montevideo;1;1020;1200
+30;Sociedad Anónima;Kinko Centro;Colonia 1200;1;Centro;4;Kinko;-34,9;-56,19;Montevideo;Montevideo;1;1020;300

@@ -1,0 +1,14 @@
+{
+  "name": "precios-uy",
+  "private": true,
+  "packageManager": "pnpm@10.28.0",
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "db:migrate": "pnpm --filter @precios/db migrate",
+    "scrape": "pnpm --filter @precios/scrapers scrape",
+    "import:sipc": "pnpm --filter @precios/db import:sipc"
+  }
+}

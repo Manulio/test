@@ -1,0 +1,64 @@
+# Despliegue local completo:
+#   docker compose up -d --build                         → base + migraciones + web en http://localhost:3000
+#   docker compose run --rm tools pnpm --filter @precios/db seed   → datos de demo
+#   docker compose run --rm tools pnpm scrape disco      → scrapear una cadena
+#   docker compose --profile scheduler up -d             → scrapeo automático todas las noches
+
+x-database-url: &database-url
+  DATABASE_URL: postgres://postgres:postgres@db:5432/precios
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: precios
+    ports:
+      - "5434:5432"
+    volumes:
+      - precios-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d precios"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+
+  migrate:
+    build: { context: ., target: tools }
+    image: precios-uy-tools
+    environment: *database-url
+    depends_on:
+      db: { condition: service_healthy }
+    restart: "no"
+
+  web:
+    build: { context: ., target: web }
+    image: precios-uy-web
+    environment: *database-url
+    ports:
+      - "3000:3000"
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+    restart: unless-stopped
+
+  # Para comandos sueltos: docker compose run --rm tools <comando>
+  tools:
+    image: precios-uy-tools
+    profiles: [tools]
+    environment: *database-url
+    depends_on:
+      db: { condition: service_healthy }
+
+  # Scrapea todas las cadenas a las 06:17 UTC (03:17 en Uruguay).
+  scheduler:
+    image: precios-uy-tools
+    profiles: [scheduler]
+    environment: *database-url
+    command: ["sh", "-c", "echo '17 6 * * * cd /app && pnpm scrape' | crontab - && exec crond -f -l 8"]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+    restart: unless-stopped
+
+volumes:
+  precios-data:
